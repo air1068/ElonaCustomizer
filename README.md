@@ -37,6 +37,7 @@ https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html
 &nbsp;
 
 Changelog:
+* v0.6b: Fixed bug related to macros.
 * v0.5b: Fixed one last bug that crept in somehow. Confirmed that the split source code still compiles. Initial public release.
 * v0.4a: Fixed the last observable bugs and got Customize working.
 * v0.3a: Fixed Shift-JIS text encoding and a few more bugs. Made function parameter renaming optional because it takes way longer.
