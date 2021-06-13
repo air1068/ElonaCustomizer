@@ -84,7 +84,7 @@ public class MainWindow {
 	protected void createContents() {
 		shlElonaCustomizer = new Shell();
 		shlElonaCustomizer.setSize(450, 160);
-		shlElonaCustomizer.setText("Elona Customizer v0.5b");
+		shlElonaCustomizer.setText("Elona Customizer v0.6b");
 		
 		Label lblNewLabel = new Label(shlElonaCustomizer, SWT.NONE);
 		lblNewLabel.setBounds(189, 37, 235, 15);
@@ -141,7 +141,7 @@ public class MainWindow {
 					if (btnAutorename.getSelection()) {
 						String line = br.readLine();
 						while (line != null) {
-							if (line.startsWith("#def")) {
+							if (line.startsWith("#deffunc") || line.startsWith("#defcfunc")) {
 								//Rename function parameters. Scope is kept to within the function rather than the whole file to save time.
 								String[] searchList = {};
 								String[] replacementList = {};
@@ -210,7 +210,7 @@ public class MainWindow {
 					BufferedReader br = new BufferedReader(new StringReader(mainhsp));
 					String line = br.readLine();
 					while (line != null) {
-						if (line.startsWith("#def") || line.startsWith("*")) {
+						if (line.startsWith("#deffunc") || line.startsWith("#defcfunc") || line.startsWith("*")) {
 							String name = "";
 							if (line.startsWith("#def")) {
 								name = line.split(" ")[1];
