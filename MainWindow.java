@@ -84,7 +84,7 @@ public class MainWindow {
 	protected void createContents() {
 		shlElonaCustomizer = new Shell();
 		shlElonaCustomizer.setSize(450, 160);
-		shlElonaCustomizer.setText("Elona Customizer v0.6b");
+		shlElonaCustomizer.setText("Elona Customizer v0.7b");
 		
 		Label lblNewLabel = new Label(shlElonaCustomizer, SWT.NONE);
 		lblNewLabel.setBounds(189, 37, 235, 15);
@@ -157,7 +157,7 @@ public class MainWindow {
 								}
 								String functext = line+"\n";
 								line = br.readLine();
-								while (line != null && line.startsWith("\t")) {
+								while (line != null && (line.startsWith("\t") || line.isEmpty())) {
 									functext += line+"\n";
 									line = br.readLine();
 								}
@@ -222,7 +222,7 @@ public class MainWindow {
 							BufferedWriter funcout = new BufferedWriter(new FileWriter(funcfile, Charset.forName("Shift_JIS")));
 							funcout.write(line+"\n");
 							line = br.readLine();
-							while (line != null && line.startsWith("\t")) {
+							while (line != null && (line.startsWith("\t") || line.isEmpty())) {
 								funcout.write(line+"\n");
 								line = br.readLine();
 							}
