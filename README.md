@@ -5,21 +5,32 @@ Elona Customizer is a tool that helps with the editing of decompiled HSP program
 
 Instructions:
 1. Decompile an HSP program and put the .HSP file in a folder somewhere. OPTIONAL: Place an .ECL file and some .ECR files in that same folder.
-2. In Elona Customizer, click OPEN and select the decompiled HSP file. This will also check for the presence of an ECL file. OPTIONAL: Enable function parameter auto-renaming by clicking the checkbox. (Note that parameter auto-renaming will probably add like 10 minutes to processing time.)
-3. Click SPLIT. (Note: The program will seem to freeze up for a bit while processing 12+ megabytes of text. Just let it run.) This will move the code of every function and label into a separate file named after it, leaving #include statements behind in the main HSP file. If the option was enabled, all function parameters will be given less random names, and if an ECL file is present the goto labels will be renamed accordingly before being split off. The original decompiled HSP file will be unmodified; instead, a new HSP file with ".split" appended to its name will be created.
-4. OPTIONAL: Click CUSTOMIZE. This will apply every ECR file to the HSP file of the same name.
+2. In Elona Customizer, click Open and select the decompiled HSP file. This will also check for the presence of an ECL file. OPTIONAL: Enable function parameter auto-renaming by clicking the checkbox. (Note that parameter auto-renaming will probably add like 10 minutes to processing time.)
+3. Click Split. (Note: The program will seem to freeze up for a bit while processing 12+ megabytes of text. Just let it run.) This will first clean up unused debug labels, then move the code of every function and label into a separate file named after it, leaving #include statements behind in the main HSP file. If the option was enabled, all function parameters will be given less random names, and if an ECL file is present the goto labels will be renamed accordingly before being split off. The original decompiled HSP file will be unmodified; instead, a new HSP file with ".split" appended to its name will be created.
+4. OPTIONAL: Click Customize. This will apply every ECR file to the HSP file of the same name.
 
 &nbsp;
 
 ECL file:<br>
-An Elona Customizer Labels file is a plaintext file used to automatically rename goto labels during the SPLIT operation. The filename must be identical to the decompiled HSP file it's to be used on.
+An Elona Customizer Labels file is a plaintext file used to automatically rename goto labels during the SPLIT operation. The filename must be identical to the decompiled HSP file it's to be used on.<br>
 The first line of text is the desired name for the label, and the second is a unique bit of code belonging to that label. For example:
 
-> cast_proc<br>
-> "You are going to over-cast the spell. Are you sure?"
+> game_win<br>
+> "Unbelievable! You conquered Lesimas!"
 
-The line of code will be located, and the nearest label above it will be renamed from, e.g. "*label_2717" to "*cast_proc".
-Naturally, an ECL file can handle as many labels as needed. Just remember: odd lines are the new names, even lines are lines of code unique to each label.
+The line of code will be located, and the nearest label above it will be renamed from, e.g. "*label_3947" to "*game_win".<br>
+Naturally, an ECL file can handle as many labels as needed. Just remember: odd lines are the new names, even lines are lines of code unique to each label.<br>
+However, some subroutines are basically impossible to identify this way. For these cases, you can mark the label as a "relative label" with an asterisk, and then specify the label that it follows. For example:
+
+> game_win<br>
+> "Unbelievable! You conquered Lesimas!"<br>
+> *game_win_WHILE1<br>
+> game_win<br>
+> *game_win_WEND1<br>
+> game_win_WHILE1
+
+Here, after renaming "*label_3947" to "*game_win", the next label below it ("*label_3948" in this case) will be located and renamed to "*game_win_WHILE1", and then the next label after that will be renamed to "*game_win_WEND1".
+Finally, if you want to make sure that your label file will work properly, then before clicking Split you can click Verify ECL File. This will check to make sure the identifying string for each standard label only exists once in the HSP file, and produce a text file in the same folder listing any code snippets that weren't found or that were found more than once.
 
 &nbsp;
 
@@ -37,6 +48,7 @@ https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html
 &nbsp;
 
 Changelog:
+* v0.8a: Added "relative label" functionality to ECL files. Added ECL verification. Added rudimentary process to deal with debug goto labels.
 * v0.7b: Fixed bug related to newlines in functions.
 * v0.6b: Fixed bug related to macros.
 * v0.5b: Fixed one last bug that crept in somehow. Confirmed that the split source code still compiles. Initial public release.
